@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCAO-UUT | Hub d'Accueil L1</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ucao: {
+                            blue: '#1e3a8a',
+                            lightBlue: '#3b82f6',
+                            green: '#059669',
+                            lightGreen: '#10b981',
+                            dark: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-ucao-dark dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Notification Toast / Modal Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo & Brand -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-ucao-blue to-ucao-green text-white p-2.5 rounded-xl shadow-md flex items-center justify-center font-bold text-xl">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold tracking-wider text-ucao-green uppercase block">UCAO-UUT Togo</span>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white">Hub L1 - Rentrée</h1>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <button onclick="switchTab('accueil')" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-medium transition-colors text-ucao-blue dark:text-ucao-lightBlue bg-blue-50 dark:bg-slate-800" data-target="accueil">
+                    <i class="fa-solid fa-house mr-1.5"></i> Accueil
+                </button>
+                <button onclick="switchTab('guide')" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-ucao-blue dark:text-slate-300 dark:hover:text-white" data-target="guide">
+                    <i class="fa-solid fa-compass mr-1.5"></i> Guide L1 & Campus
+                </button>
+                <button onclick="switchTab('parrainage')" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-ucao-blue dark:text-slate-300 dark:hover:text-white" data-target="parrainage">
+                    <i class="fa-solid fa-user-group mr-1.5"></i> Parrainage
+                </button>
+                <button onclick="switchTab('ressources')" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-ucao-blue dark:text-slate-300 dark:hover:text-white" data-target="ressources">
+                    <i class="fa-solid fa-book-open mr-1.5"></i> Épreuves & Cours
+                </button>
+                <button onclick="switchTab('communaute')" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-ucao-blue dark:text-slate-300 dark:hover:text-white" data-target="communaute">
+                    <i class="fa-solid fa-comments mr-1.5"></i> FAQ & Chat
+                </button>
+            </nav>
+
+            <!-- Actions (Theme Toggle & Mobile Menu Toggle) -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleDarkMode()" aria-label="Activer le mode sombre" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+                <button onclick="toggleMobileMenu()" aria-label="Menu mobile" class="md:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-1">
+            <button onclick="switchTab('accueil'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 text-ucao-blue dark:text-ucao-lightBlue bg-blue-50 dark:bg-slate-800">
+                <i class="fa-solid fa-house w-5"></i> <span>Accueil</span>
+            </button>
+            <button onclick="switchTab('guide'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+                <i class="fa-solid fa-compass w-5"></i> <span>Guide L1 & Campus</span>
+            </button>
+            <button onclick="switchTab('parrainage'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+                <i class="fa-solid fa-user-group w-5"></i> <span>Parrainage</span>
+            </button>
+            <button onclick="switchTab('ressources'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+                <i class="fa-solid fa-book-open w-5"></i> <span>Épreuves & Cours</span>
+            </button>
+            <button onclick="switchTab('communaute'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+                <i class="fa-solid fa-comments w-5"></i> <span>FAQ & Chat</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB 1: ACCUEIL / QUICK START -->
+        <section id="tab-accueil" class="tab-content space-y-10">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-ucao-blue via-blue-700 to-ucao-green text-white shadow-2xl p-8 sm:p-12">
+                <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl space-y-6">
+                    <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-md uppercase tracking-wider text-emerald-100">
+                        <i class="fa-solid fa-star mr-1.5 text-yellow-300"></i> Promotion 2026 - 2027
+                    </span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                        Bienvenue dans la famille UCAO-UUT !
+                    </h2>
+                    <p class="text-blue-100 text-base sm:text-lg leading-relaxed">
+                        Félicitations pour ton admission ! Ce portail est ton compagnon officiel pour réussir tes premiers pas en Licence 1 (L1) et t'intégrer facilement sur le campus.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="switchTab('guide')" class="bg-white text-ucao-blue hover:bg-blue-50 font-semibold px-6 py-3 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-compass mr-2"></i> Explorer le guide L1
+                        </button>
+                        <button onclick="switchTab('parrainage')" class="bg-ucao-green hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 border border-emerald-400">
+                            <i class="fa-solid fa-user-plus mr-2"></i> Demander un Parrain
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compte à rebours avant la rentrée -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 dark:border-slate-700">
+                <div class="text-center max-w-xl mx-auto mb-6">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-clock text-ucao-green"></i> Compte à rebours avant la grande rentrée
+                    </h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Prépare tes affaires, le grand jour approche à grands pas !</p>
+                </div>
+                <div id="countdown" class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto text-center">
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span id="days" class="text-3xl sm:text-4xl font-ext500 font-bold text-ucao-blue dark:text-ucao-lightBlue">00</span>
+                        <span class="block text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Jours</span>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span id="hours" class="text-3xl sm:text-4xl font-extrabold text-ucao-blue dark:text-ucao-lightBlue">00</span>
+                        <span class="block text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Heures</span>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span id="minutes" class="text-3xl sm:text-4xl font-extrabold text-ucao-blue dark:text-ucao-lightBlue">00</span>
+                        <span class="block text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Minutes</span>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span id="seconds" class="text-3xl sm:text-4xl font-extrabold text-ucao-green">00</span>
+                        <span class="block text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Secondes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Start: 4 étapes du premier jour -->
+            <div class="space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">🚀 Quick Start : Les 4 étapes indispensables</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Suis cet ordre chronologique pour valider ton intégration administrative.</p>
+                    </div>
+                    <div class="text-sm font-semibold text-ucao-green bg-emerald-50 dark:bg-emerald-950/40 px-3.5 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800 self-start sm:self-auto">
+                        <i class="fa-solid fa-circle-check mr-1"></i> Check-list officielle
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Étape 1 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 dark:bg-blue-950/30 rounded-bl-full -z-0"></div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="w-12 h-12 rounded-xl bg-ucao-blue text-white flex items-center justify-center font-bold text-lg shadow-md">1</div>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Frais & Inscription</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                Solder les frais d'inscription et de scolarité auprès de la comptabilité ou via les plateformes agréées de l'UCAO.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700/60">
+                            <span class="text-xs font-medium text-blue-600 dark:text-blue-400 flex items-center gap-1">
+                                <i class="fa-solid fa-file-invoice-dollar"></i> Quittance requise
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Étape 2 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 dark:bg-emerald-950/30 rounded-bl-full -z-0"></div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="w-12 h-12 rounded-xl bg-ucao-green text-white flex items-center justify-center font-bold text-lg shadow-md">2</div>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Dossier Pédagogique</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                Déposer ton dossier complet (bulletins, acte de naissance, photos) au secrétariat de ta filière et valider tes choix de cours.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700/60">
+                            <span class="text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                                <i class="fa-solid fa-folder-open"></i> Secrétariat académique
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Étape 3 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 dark:bg-blue-950/30 rounded-bl-full -z-0"></div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="w-12 h-12 rounded-xl bg-ucao-blue text-white flex items-center justify-center font-bold text-lg shadow-md">3</div>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Carte d'Étudiant</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                Faire la photo pour l'établissement de ta carte biométrique indispensable pour accéder à la bibliothèque et aux salles d'examen.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700/60">
+                            <span class="text-xs font-medium text-blue-600 dark:text-blue-400 flex items-center gap-1">
+                                <i class="fa-solid fa-id-card"></i> Service communication/scolarité
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Étape 4 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 dark:bg-emerald-950/30 rounded-bl-full -z-0"></div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="w-12 h-12 rounded-xl bg-ucao-green text-white flex items-center justify-center font-bold text-lg shadow-md">4</div>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Repérage des Salles</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                Visiter le campus, identifier les amphis, les laboratoires informatiques et rencontrer ton parrain ou tes délégués de classe.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700/60">
+                            <span class="text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot"></i> Campus UCAO-UUT
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: GUIDE DE SURVIE & CAMPUS -->
+        <section id="tab-guide" class="tab-content hidden space-y-10">
+            <div>
+                <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">🧭 Guide de Survie & Campus UCAO-UUT</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-base mt-2">Tout ce que tu dois savoir pour survivre et t'épanouir durant ta première année universitaire.</p>
+            </div>
+
+            <!-- Grille du Guide -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Colonne 1: Le Système LMD -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 text-ucao-blue dark:text-ucao-lightBlue flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Comprendre le LMD</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Le système Licence-Master-Doctorat repose sur des <strong>Semestres</strong> (S1 & S2 pour la L1) et des <strong>Crédits (ECTS)</strong>.
+                    </p>
+                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-ucao-green mt-1"></i>
+                            <span><strong>60 Crédits</strong> requis pour valider l'année (30 par semestre).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-ucao-green mt-1"></i>
+                            <span>Note éliminatoire généralement en dessous de 5/20 selon les modules.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-ucao-green mt-1"></i>
+                            <span>Contrôle continu (CC) + Examen final (EF) = Note définitive.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Colonne 2: Plan & Bâtiments du Campus -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-ucao-green flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Repérage sur le Campus</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Le campus de l'UCAO-UUT (situé à Lomé) regroupe plusieurs pôles clés pour tes cours et démarches :
+                    </p>
+                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-building-columns text-ucao-blue mt-1"></i>
+                            <span><strong>Amphi Principal :</strong> Cours magistraux en grand effectif.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-laptop text-ucao-blue mt-1"></i>
+                            <span><strong>Labo Info / Multimédia :</strong> Travaux pratiques et recherches.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-book text-ucao-blue mt-1"></i>
+                            <span><strong>Bibliothèque Universitaire :</strong> Espace de lecture et de documentation.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-burger text-ucao-blue mt-1"></i>
+                            <span><strong>Cafétéria / Espace détente :</strong> Repas et pauses entre deux cours.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Colonne 3: Transport & Bons Plans -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-bus"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Transport & Mobilité</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Comment arriver à l'heure à l'université sans stresser ?
+                    </p>
+                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-motorcycle text-ucao-green mt-1"></i>
+                            <span><strong>Zémidjans (Taxis-motos) :</strong> Très rapides pour éviter les embouteillages de Lomé (négocie bien le tarif avant de monter).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-taxi text-ucao-green mt-1"></i>
+                            <span><strong>Taxis collectifs :</strong> Lignes desservant les grands axes proches du campus.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-clock text-ucao-green mt-1"></i>
+                            <span><strong>Conseil :</strong> Prévois d'arriver 15 minutes avant le début des cours pour t'installer sereinement.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: ESPACE PARRAINAGE -->
+        <section id="tab-parrainage" class="tab-content hidden space-y-10">
+            <div class="max-w-3xl mx-auto text-center space-y-3">
+                <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-ucao-green uppercase tracking-wider border border-emerald-200 dark:border-emerald-800">
+                    <i class="fa-solid fa-hands-holding-child mr-1.5"></i> Programme Mentorat L1
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Trouve ton Parrain ou ta Marraine</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-base">
+                    Ne reste pas isolé ! Un étudiant plus ancien de ta filière (L2 ou L3) t'accompagnera pour partager ses conseils, ses anciens cours et t'aider à réussir ton semestre.
+                </p>
+            </div>
+
+            <!-- Grille formulaire & Liste des demandes -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start max-w-5xl mx-auto">
+                <!-- Formulaire de Demande -->
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-6">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square text-ucao-blue"></i> Formulaire de jumelage L1
+                    </h3>
+                    <form id="parrainage-form" onsubmit="handleParrainageSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nom et Prénoms</label>
+                            <input type="text" id="nom" required placeholder="Ex: Kossi Mensah" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Filière / Département</label>
+                            <select id="filiere" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm">
+                                <option value="">-- Choisis ta filière --</option>
+                                <option value="Informatique">Informatique (Génie Logiciel / Réseaux)</option>
+                                <option value="Droit">Droit Privé / Droit Public</option>
+                                <option value="Gestion">Gestion / Administration des Entreprises</option>
+                                <option value="Economie">Sciences Économiques</option>
+                                <option value="Communication">Communication & Médias</option>
+                                <option value="Lettres">Lettres Modernes / Langues</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Téléphone / WhatsApp</label>
+                            <input type="tel" id="whatsapp" required placeholder="Ex: +228 90 00 00 00" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Un mot sur tes attentes (optionnel)</label>
+                            <textarea id="attentes" rows="3" placeholder="Besoin d'aide en programmation, méthodologie..." class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-ucao-blue hover:bg-blue-800 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Soumettre ma demande de parrain
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Liste des demandes récentes & Binômes validés -->
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-ucao-green"></i> Demandes enregistrées (Local)
+                            </h3>
+                            <span id="demande-count" class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-ucao-blue dark:text-ucao-lightBlue">0</span>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Voici les derniers étudiants inscrits pour recevoir un parrain sur cette session.</p>
+                        
+                        <div id="demandes-list" class="space-y-3 max-h-96 overflow-y-auto pr-1">
+                            <!-- Injecté par JS -->
+                            <div class="text-center py-8 text-slate-400 text-sm">Aucune demande enregistrée pour le moment. Sois le premier !</div>
+                        </div>
+                    </div>
+
+                    <!-- Carte Parrains Référents -->
+                    <div class="bg-gradient-to-br from-emerald-900 to-slate-900 text-white p-6 rounded-3xl shadow-xl space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-emerald-400 font-bold">
+                                <i class="fa-solid fa-shield-heart"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Coordination Mentorat L1</h4>
+                                <span class="text-xs text-emerald-300">Responsable BDE & Vie Étudiante</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Les parrains sont attribués chaque semaine par ordre d'arrivée des dossiers. Tu recevras un message WhatsApp dès l'affectation de ton parrain L2/L3.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: BANQUE D'ÉPREUVES & COURS L1 -->
+        <section id="tab-ressources" class="tab-content hidden space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">📚 Banque d'Épreuves & Supports L1</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-base mt-1">Télécharge les anciens sujets d'examens et résumés de cours pour booster tes révisions.</p>
+                </div>
+                <!-- Barre de recherche / Filtre par filière -->
+                <div class="w-full md:w-72">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                        <input type="text" id="search-ressource" oninput="filterRessources()" placeholder="Rechercher une matière..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm shadow-sm">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtres par catégorie -->
+            <div class="flex flex-wrap gap-2">
+                <button onclick="setRessourceFilter('all')" class="ressource-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-ucao-blue text-white transition-all shadow-sm" data-cat="all">Tous</button>
+                <button onclick="setRessourceFilter('Informatique')" class="ressource-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700" data-cat="Informatique">Informatique</button>
+                <button onclick="setRessourceFilter('Droit')" class="ressource-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700" data-cat="Droit">Droit</button>
+                <button onclick="setRessourceFilter('Gestion')" class="ressource-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700" data-cat="Gestion">Gestion</button>
+                <button onclick="setRessourceFilter('Economie')" class="ressource-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700" data-cat="Economie">Économie</button>
+            </div>
+
+            <!-- Grille des documents -->
+            <div id="ressources-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injecté par JS -->
+            </div>
+        </section>
+
+        <!-- TAB 5: FAQ & CHAT COMMUNAUTAIRE -->
+        <section id="tab-communaute" class="tab-content hidden space-y-10">
+            <div>
+                <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">💬 FAQ & Espace d'Entraide L1</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-base mt-1">Pose tes questions aux autres nouveaux étudiants et trouve les réponses aux interrogations fréquentes.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- FAQ Accordéon -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-circle-question text-ucao-blue"></i> Questions Fréquentes (FAQ)
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <!-- FAQ Item 1 -->
+                        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden shadow-sm">
+                            <button onclick="toggleFaq(this)" class="w-full px-6 py-4 text-left font-semibold text-slate-800 dark:text-slate-200 flex justify-between items-center text-sm">
+                                <span>Où récupérer mon emploi du temps officiel ?</span>
+                                <i class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+                            </button>
+                            <div class="hidden px-6 pb-4 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700/60 pt-3">
+                                L'emploi du temps est affiché sur les panneaux d'affichage de ton département et partagé dans les groupes WhatsApp officiels de ta filière dès la semaine de pré-rentrée.
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 2 -->
+                        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden shadow-sm">
+                            <button onclick="toggleFaq(this)" class="w-full px-6 py-4 text-left font-semibold text-slate-800 dark:text-slate-200 flex justify-between items-center text-sm">
+                                <span>Comment fonctionne le rattrapage en cas d'échec ?</span>
+                                <i class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+                            </button>
+                            <div class="hidden px-6 pb-4 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700/60 pt-3">
+                                Si tu n'obtiens pas la moyenne (10/20) dans une UE après les sessions normales, des sessions de rattrapage sont organisées à la fin de chaque semestre pour valider tes crédits manquants.
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden shadow-sm">
+                            <button onclick="toggleFaq(this)" class="w-full px-6 py-4 text-left font-semibold text-slate-800 dark:text-slate-200 flex justify-between items-center text-sm">
+                                <span>Existe-t-il une connexion Wi-Fi sur le campus ?</span>
+                                <i class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+                            </button>
+                            <div class="hidden px-6 pb-4 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700/60 pt-3">
+                                Oui ! Un réseau Wi-Fi étudiant est accessible sur le campus. Tes accès te seront fournis lors de la validation de ton inscription informatique.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mini Chat / Salon d'Entraide Local -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col h-[480px]">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-comments text-ucao-green"></i> Salon d'Entraide L1 (Direct)
+                        </h3>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> En ligne
+                        </span>
+                    </div>
+
+                    <!-- Messages Container -->
+                    <div id="chat-messages" class="flex-grow overflow-y-auto py-4 space-y-3 pr-2">
+                        <!-- Messages injectés par JS -->
+                    </div>
+
+                    <!-- Input Message -->
+                    <form onsubmit="handleChatSubmit(event)" class="pt-3 border-t border-slate-100 dark:border-slate-700 flex gap-2">
+                        <input type="text" id="chat-input" placeholder="Écris ton message..." class="flex-grow px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-ucao-blue">
+                        <button type="submit" class="bg-ucao-blue hover:bg-blue-800 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-md">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+            <div>
+                <p class="font-bold text-slate-900 dark:text-white">UCAO-UUT | Unité Universitaire à Togo</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Portail d'accueil officiel des étudiants en Licence 1 (L1) - Excellence, Travail, Intégrité.</p>
+            </div>
+            <div class="text-xs text-slate-400 dark:text-slate-500">
+                &copy; 2026 UCAO-UUT. Tous droits réservés. Conçu pour l'intégration des nouveaux L1.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. Gestion des Onglets / Navigation ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-ucao-blue', 'dark:text-ucao-lightBlue', 'bg-blue-50', 'dark:bg-slate-800');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300');
+                if(btn.dataset.target === tabId) {
+                    btn.classList.remove('text-slate-600', 'dark:text-slate-300');
+                    btn.classList.add('text-ucao-blue', 'dark:text-ucao-lightBlue', 'bg-blue-50', 'dark:bg-slate-800');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- 2. Mode Sombre / Clair ---
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            html.classList.toggle('dark');
+            if(html.classList.contains('dark')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Charger le thème au démarrage
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+        }
+
+        // --- 3. Compte à rebours dynamique ---
+        // Date de rentrée fixée au 19 octobre 2026 par exemple
+        const rentreeDate = new Date('oct 19, 2026 08:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = rentreeDate - now;
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = "<div class='col-span-4 text-center font-bold text-ucao-green text-lg'>🎉 La rentrée a commencé ! Bon cours à tous les L1 !</div>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- 4. Système de Toast / Notifications ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `px-5 py-3.5 rounded-2xl shadow-xl text-white font-medium text-sm flex items-center gap-3 transition-all transform translate-y-2 opacity-0 ${type === 'success' ? 'bg-emerald-600' : 'bg-blue-600'}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-info-circle'} text-lg"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // --- 5. Espace Parrainage (LocalStorage) ---
+      
+
+        function renderDemandes() {
+            const listContainer = document.getElementById('demandes-list');
+            document.getElementById('demande-count').innerText = demandes.length;
+
+            if (demandes.length === 0) {
+                listContainer.innerHTML = '<div class="text-center py-8 text-slate-400 text-sm">Aucune demande enregistrée pour le moment.</div>';
+                return;
+            }
+
+            listContainer.innerHTML = demandes.map(d => `
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700/80 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-900 dark:text-white text-sm">${escapeHtml(d.nom)}</span>
+                        <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-ucao-blue dark:text-ucao-lightBlue font-semibold">${escapeHtml(d.filiere)}</span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400"><i class="fa-brands fa-whatsapp text-emerald-500 mr-1"></i> ${escapeHtml(d.whatsapp)}</p>
+                    ${d.attentes ? `<p class="text-xs text-slate-600 dark:text-slate-300 italic bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700">"${escapeHtml(d.attentes)}"</p>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function handleParrainageSubmit(e) {
+            e.preventDefault();
+            const nom = document.getElementById('nom').value.trim();
+            const filiere = document.getElementById('filiere').value;
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const attentes = document.getElementById('attentes').value.trim();
+
+            const nouvelleDemande = { nom, filiere, whatsapp, attentes };
+            demandes.unshift(nouvelleDemande);
+            localStorage.setItem('ucao_demandes_parrain', JSON.stringify(demandes));
+
+            renderDemandes();
+            document.getElementById('parrainage-form').reset();
+            showToast("Demande de parrain enregistrée avec succès ! Un parrain te contactera bientôt.");
+        }
+
+        renderDemandes();
+
+        // --- 6. Banque d'Épreuves & Cours ---
+        const ressourcesData = [
+            { title: "Algorithmique & Programmation 1", cat: "Informatique", type: "Examen 2024", format: "PDF", size: "2.4 Mo" },
+            { title: "Introduction au Droit Civil", cat: "Droit", type: "Résumé Cours", format: "PDF", size: "1.8 Mo" },
+            { title: "Comptabilité Générale S1", cat: "Gestion", type: "Annales Corrigées", format: "PDF", size: "3.1 Mo" },
+            { title: "Analyse Mathématique 1", cat: "Economie", type: "Sujet TD", format: "PDF", size: "1.2 Mo" },
+            { title: "Architecture des Ordinateurs", cat: "Informatique", type: "Cours Complet", format: "PDF", size: "5.0 Mo" },
+            { title: "Droit Constitutionnel", cat: "Droit", type: "Examen 2023", format: "PDF", size: "1.5 Mo" }
+        ];
+
+        let currentRessourceCat = 'all';
+
+        function renderRessources(filter = 'all', search = '') {
+            const grid = document.getElementById('ressources-grid');
+            const filtered = ressourcesData.filter(item => {
+                const matchCat = filter === 'all' || item.cat === filter;
+                const matchSearch = item.title.toLowerCase().includes(search.toLowerCase()) || item.cat.toLowerCase().includes(search.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 text-sm">Aucun document trouvé pour cette recherche.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(r => `
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950 text-ucao-blue dark:text-ucao-lightBlue font-semibold">${r.cat}</span>
+                            <span class="text-xs text-slate-400 font-medium">${r.format} • ${r.size}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-base">${r.title}</h4>
+                        <span class="inline-block text-xs text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded">${r.type}</span>
+                    </div>
+                    <button onclick="simulateDownload('${r.title}')" class="w-full bg-slate-100 hover:bg-ucao-blue hover:text-white dark:bg-slate-700 dark:hover:bg-ucao-blue text-slate-700 dark:text-slate-200 font-semibold py-2.5 px-4 rounded-xl text-sm transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> Télécharger le fichier
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function setRessourceFilter(cat) {
+            currentRessourceCat = cat;
+            document.querySelectorAll('.ressource-filter-btn').forEach(btn => {
+                if(btn.dataset.cat === cat) {
+                    btn.className = "ressource-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-ucao-blue text-white transition-all shadow-sm";
+                } else {
+                    btn.className = "ressource-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700";
+                }
+            });
+            const searchVal = document.getElementById('search-ressource').value;
+            renderRessources(cat, searchVal);
+        }
+
+        function filterRessources() {
+            const searchVal = document.getElementById('search-ressource').value;
+            renderRessources(currentRessourceCat, searchVal);
+        }
+
+        function simulateDownload(title) {
+            showToast(`Téléchargement simulé de : "${title}" (Fichier PDF prêt)`);
+        }
+
+        renderRessources();
+
+        // --- 7. FAQ & Mini Chat Communautaire ---
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('fa-chevron-down');
+            content.classList.toggle('hidden');
+            btn.classList.toggle('text-ucao-blue');
+        }
+
+        let chatMessages = [
+            { auteur: 'Emmanuel (L2)', texte: 'Salut les nouveaux L1 ! Bienvenue à l’UCAO. N’hésitez pas si vous avez des questions sur l’orientation.', time: '10:15' },
+            { auteur: 'Grace (L1 Info)', texte: 'Merci ! Est-ce que quelqu’un sait où se fait la visite médicale ?', time: '10:22' }
+        ];
+
+        function renderChat() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = chatMessages.map(m => `
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700/60 space-y-1">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-ucao-blue dark:text-ucao-lightBlue">${escapeHtml(m.auteur)}</span>
+                        <span class="text-slate-400">${m.time}</span>
+                    </div>
+                    <p class="text-xs text-slate-700 dark:text-slate-300">${escapeHtml(m.texte)}</p>
+                </div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const texte = input.value.trim();
+            if(!texte) return;
+
+            const now = new Date();
+            const time = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+            chatMessages.push({ auteur: 'Toi (Nouveau L1)', texte, time });
+            input.value = '';
+            renderChat();
+        }
+
+        renderChat();
+
+        // Fonction utilitaire pour éviter les injections XSS simples
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
