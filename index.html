@@ -134,13 +134,13 @@
             <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 dark:border-slate-700">
                 <div class="text-center max-w-xl mx-auto mb-6">
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center justify-center gap-2">
-                        <i class="fa-regular fa-clock text-ucao-green"></i> Compte à rebours avant la grande rentrée
+                        <i class="fa-regular fa-clock text-ucao-green"></i> Compte à rebours avant la grande rentrée (19 Octobre 2026)
                     </h3>
                     <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Prépare tes affaires, le grand jour approche à grands pas !</p>
                 </div>
                 <div id="countdown" class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto text-center">
                     <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-                        <span id="days" class="text-3xl sm:text-4xl font-ext500 font-bold text-ucao-blue dark:text-ucao-lightBlue">00</span>
+                        <span id="days" class="text-3xl sm:text-4xl font-extrabold text-ucao-blue dark:text-ucao-lightBlue">00</span>
                         <span class="block text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Jours</span>
                     </div>
                     <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
@@ -340,14 +340,13 @@
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Trouve ton Parrain ou ta Marraine</h2>
                 <p class="text-slate-500 dark:text-slate-400 text-base">
-                    Ne reste pas isolé ! Un étudiant plus ancien de ta filière (L2 ou L3) t'accompagnera pour partager ses conseils, ses anciens cours et t'aider à réussir ton semestre.
+                    Ne reste pas isolé ! Remplis le formulaire ci-dessous. Ta demande sera directement envoyée au responsable du mentorat sur WhatsApp au <strong>92 48 58 66</strong>.
                 </p>
             </div>
 
-            <!-- Grille formulaire & Liste des demandes -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start max-w-5xl mx-auto">
-                <!-- Formulaire de Demande -->
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-6">
+            <!-- Formulaire de Demande Centré -->
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-slate-200/80 dark:border-slate-700 space-y-6">
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <i class="fa-solid fa-pen-to-square text-ucao-blue"></i> Formulaire de jumelage L1
                     </h3>
@@ -355,6 +354,14 @@
                         <div>
                             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nom et Prénoms</label>
                             <input type="text" id="nom" required placeholder="Ex: Kossi Mensah" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Sexe / Genre</label>
+                            <select id="sexe" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm">
+                                <option value="">-- Sélectionne ton sexe --</option>
+                                <option value="Masculin">Masculin</option>
+                                <option value="Féminin">Féminin</option>
+                            </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Filière / Département</label>
@@ -369,51 +376,17 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Téléphone / WhatsApp</label>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Ton Téléphone / WhatsApp</label>
                             <input type="tel" id="whatsapp" required placeholder="Ex: +228 90 00 00 00" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Un mot sur tes attentes (optionnel)</label>
                             <textarea id="attentes" rows="3" placeholder="Besoin d'aide en programmation, méthodologie..." class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-ucao-blue text-sm"></textarea>
                         </div>
-                        <button type="submit" class="w-full bg-ucao-blue hover:bg-blue-800 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-paper-plane"></i> Soumettre ma demande de parrain
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-xl"></i> Envoyer ma demande via WhatsApp
                         </button>
                     </form>
-                </div>
-
-                <!-- Liste des demandes récentes & Binômes validés -->
-                <div class="space-y-6">
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <i class="fa-solid fa-list-check text-ucao-green"></i> Demandes enregistrées (Local)
-                            </h3>
-                            <span id="demande-count" class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-ucao-blue dark:text-ucao-lightBlue">0</span>
-                        </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Voici les derniers étudiants inscrits pour recevoir un parrain sur cette session.</p>
-                        
-                        <div id="demandes-list" class="space-y-3 max-h-96 overflow-y-auto pr-1">
-                            <!-- Injecté par JS -->
-                            <div class="text-center py-8 text-slate-400 text-sm">Aucune demande enregistrée pour le moment. Sois le premier !</div>
-                        </div>
-                    </div>
-
-                    <!-- Carte Parrains Référents -->
-                    <div class="bg-gradient-to-br from-emerald-900 to-slate-900 text-white p-6 rounded-3xl shadow-xl space-y-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-emerald-400 font-bold">
-                                <i class="fa-solid fa-shield-heart"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Coordination Mentorat L1</h4>
-                                <span class="text-xs text-emerald-300">Responsable BDE & Vie Étudiante</span>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Les parrains sont attribués chaque semaine par ordre d'arrivée des dossiers. Tu recevras un message WhatsApp dès l'affectation de ton parrain L2/L3.
-                        </p>
-                    </div>
                 </div>
             </div>
         </section>
@@ -586,9 +559,8 @@
             document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
         }
 
-        // --- 3. Compte à rebours dynamique ---
-        // Date de rentrée fixée au 19 octobre 2026 par exemple
-        const rentreeDate = new Date('oct 19, 2026 08:00:00').getTime();
+        // --- 3. Compte à rebours dynamique (Rentrée le 19 Octobre 2026) ---
+        const rentreeDate = new Date('Oct 19, 2026 08:00:00').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -630,47 +602,36 @@
             }, 3500);
         }
 
-        // --- 5. Espace Parrainage (LocalStorage) ---
-      
-
-        function renderDemandes() {
-            const listContainer = document.getElementById('demandes-list');
-            document.getElementById('demande-count').innerText = demandes.length;
-
-            if (demandes.length === 0) {
-                listContainer.innerHTML = '<div class="text-center py-8 text-slate-400 text-sm">Aucune demande enregistrée pour le moment.</div>';
-                return;
-            }
-
-            listContainer.innerHTML = demandes.map(d => `
-                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700/80 space-y-2">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-slate-900 dark:text-white text-sm">${escapeHtml(d.nom)}</span>
-                        <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-ucao-blue dark:text-ucao-lightBlue font-semibold">${escapeHtml(d.filiere)}</span>
-                    </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400"><i class="fa-brands fa-whatsapp text-emerald-500 mr-1"></i> ${escapeHtml(d.whatsapp)}</p>
-                    ${d.attentes ? `<p class="text-xs text-slate-600 dark:text-slate-300 italic bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700">"${escapeHtml(d.attentes)}"</p>` : ''}
-                </div>
-            `).join('');
-        }
-
+        // --- 5. Redirection direct vers WhatsApp (Numéro: 92485866) ---
         function handleParrainageSubmit(e) {
             e.preventDefault();
             const nom = document.getElementById('nom').value.trim();
+            const sexe = document.getElementById('sexe').value;
             const filiere = document.getElementById('filiere').value;
             const whatsapp = document.getElementById('whatsapp').value.trim();
             const attentes = document.getElementById('attentes').value.trim();
 
-            const nouvelleDemande = { nom, filiere, whatsapp, attentes };
-            demandes.unshift(nouvelleDemande);
-            localStorage.setItem('ucao_demandes_parrain', JSON.stringify(demandes));
+            const targetPhone = "22892485866";
 
-            renderDemandes();
-            document.getElementById('parrainage-form').reset();
-            showToast("Demande de parrain enregistrée avec succès ! Un parrain te contactera bientôt.");
+            // Formatage du message
+            let message = `🎓 *DEMANDE DE PARRAINAGE - UCAO-UUT*\n\n`;
+            message += `👤 *Nom & Prénoms :* ${nom}\n`;
+            message += `🚻 *Sexe :* ${sexe}\n`;
+            message += `📚 *Filière :* ${filiere}\n`;
+            message += `📱 *Contact :* ${whatsapp}\n`;
+            if (attentes) {
+                message += `💬 *Attentes :* ${attentes}\n`;
+            }
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${targetPhone}?text=${encodedMessage}`;
+
+            showToast("Redirection vers WhatsApp pour l'envoi de ta demande...");
+            
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 800);
         }
-
-        renderDemandes();
 
         // --- 6. Banque d'Épreuves & Cours ---
         const ressourcesData = [
@@ -741,14 +702,14 @@
         // --- 7. FAQ & Mini Chat Communautaire ---
         function toggleFaq(btn) {
             const content = btn.nextElementSibling;
-            const icon = btn.querySelector('fa-chevron-down');
             content.classList.toggle('hidden');
             btn.classList.toggle('text-ucao-blue');
         }
 
-        let chatMessages = [
-            { auteur: 'Emmanuel (L2)', texte: 'Salut les nouveaux L1 ! Bienvenue à l’UCAO. N’hésitez pas si vous avez des questions sur l’orientation.', time: '10:15' },
-            { auteur: 'Grace (L1 Info)', texte: 'Merci ! Est-ce que quelqu’un sait où se fait la visite médicale ?', time: '10:22' }
+        const chatMessages = [
+            { auteur: 'Minato', texte: 'Salut tout le monde ! Des conseils pour bien démarrer la L1 ?', time: '08:15' },
+            { auteur: 'Maruto', texte: 'Oui, je recommande de bien organiser ton emploi du temps et de ne pas négliger les TD.', time: '08:17' },
+            { auteur: 'Sasuke', texte: 'N\'hésite pas à rejoindre le groupe WhatsApp officiel pour rester informé.', time: '08:20' }
         ];
 
         function renderChat() {
